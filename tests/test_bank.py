@@ -29,3 +29,15 @@ def test_withdraw_insufficient_funds(bank_account):
         bank_account.withdraw(100)
     except ValueError as e:
         assert str(e) == "Insufficient funds"
+
+
+@pytest.mark.parametrize("initial, deposit, withdraw, expected", [
+    (100, 50, 30, 120),
+    (200, 100, 150, 150),
+    (0, 500, 200, 300),
+])
+def test_transactions(initial, deposit, withdraw, expected):
+    account = BankAccount(initial_balance=initial)
+    account.deposit(deposit)
+    account.withdraw(withdraw)
+    assert account.get_balance() == expected    
